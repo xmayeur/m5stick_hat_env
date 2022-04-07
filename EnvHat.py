@@ -4,7 +4,7 @@ import wifiCfg
 from m5stack import *
 from m5ui import *
 from uiflow import *
-
+from machine import WDT
 from secret import *
 
 lcd.setRotation(1)
@@ -31,7 +31,7 @@ def fun_m5stack_setConfig_(topic_data):
         f.write(topic_data)
     # ezdata.setData('7FNCfls4WIbuFChYq6b1XiYFEuNRTZ8Q', 'config', topic_data)
 
-
+wdt = WDT(timeout=20000)
 setScreenColor(0x000000)
 ntp = ntptime.client(host='de.pool.ntp.org', timezone=2)
 lcd.print((ntp.formatDatetime('dd-mm-yy', 'hh:mm')), 1, 1, 0x33cc00)
@@ -61,4 +61,4 @@ while True:
     lcd.print(((str(' Temp: ') + str(("%.1f" % (temp))))), 1, 30, 0xffffff)
     lcd.print(((str(' Hum: ') + str(("%.1f" % (hum))))), 1, 50, 0xffffff)
     wait(10)
-    wait_ms(2)
+    wdt.feed()
