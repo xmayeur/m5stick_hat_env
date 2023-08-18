@@ -77,17 +77,17 @@ payload = [
 #
 topic = str(ha_topic + 'T/config')
 msg = str(json.dumps(payload[0]))
-m5mqtt.publish(topic, msg, 2)
+m5mqtt.publish(topic, msg, 0)
 
 #
 topic = str(ha_topic + 'P/config')
 msg = str(json.dumps(payload[2]))
-m5mqtt.publish(topic, msg, 2)
+m5mqtt.publish(topic, msg, 0)
 
 #
 topic = str(ha_topic + 'H/config')
 msg = str(json.dumps(payload[1]))
-m5mqtt.publish(topic, msg, 2)
+m5mqtt.publish(topic, msg, 0)
 
 try:
     # config = json.loads((ezdata.getData('7FNCfls4WIbuFChYq6b1XiYFEuNRTZ8Q', 'config')))
