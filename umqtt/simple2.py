@@ -8,7 +8,9 @@ class MQTTException(Exception): 0
 
 def pid_gen(pid=0):
     A = pid
-    while True: A = A + 1 if A < 65535 else 1;yield A
+    while True:
+        A = A + 1 if A < 65535 else 1
+        yield A
 
 
 class MQTTClient:
