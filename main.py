@@ -23,8 +23,6 @@ press = None
 wifiCfg.autoConnect(lcdShow=True)
 
 
-
-
 def fun_m5stack_setConfig_(topic_data):
     global config, temp, hum, press
     config = json.loads(topic_data)
@@ -33,7 +31,7 @@ def fun_m5stack_setConfig_(topic_data):
     # ezdata.setData('7FNCfls4WIbuFChYq6b1XiYFEuNRTZ8Q', 'config', topic_data)
 
 
-# wdt = WDT(timeout=20000)
+wdt = WDT(timeout=20000)
 setScreenColor(0x000000)
 ntp = ntptime.client(host='de.pool.ntp.org', timezone=2)
 # lcd.print((ntp.formatDatetime('dd-mm-yy', 'hh:mm')), 1, 1, 0x33cc00)
@@ -44,6 +42,8 @@ m5mqtt.connect()
 m5mqtt.publish(str('m5stack/status'), str('Up'), 0)
 wait(2)
 
+# Send the autodiscovery messages to home assistant
+# to register the devices and its sensors as 'm5stick'
 ha_topic = "homeassistant/sensor/m5stick"
 payload = [
     {
@@ -89,7 +89,6 @@ topic = str(ha_topic + 'H/config')
 msg = str(json.dumps(payload[1]))
 m5mqtt.publish(topic, msg, 2)
 
-
 try:
     # config = json.loads((ezdata.getData('7FNCfls4WIbuFChYq6b1XiYFEuNRTZ8Q', 'config')))
     with open('config.json', 'r') as f:
@@ -109,10 +108,11 @@ while True:
     # m5mqtt.publish(str('m5stack/pressure'), str(press), 0)
     # m5mqtt.publish(str('m5stack/config'), str(config), 0)
     # Home Assistant integration
-    payload = {"temperature": str(("%.1f" % (temp))), "humidity": str(("%.1f" % (hum))), "pressure": str(("%.0f" % (press)))}
+    payload = {"temperature": str(("%.1f" % (temp))), "humidity": str(("%.1f" % (hum))),
+               "pressure": str(("%.0f" % (press)))}
     m5mqtt.publish(str("homeassistant/sensor/m5stick/state"), str(json.dumps(payload)))
     lcd.print(((str(' Baro: ') + str(("%.0f" % (press))))), 1, 10, 0xffffff)
     lcd.print(((str(' Temp: ') + str(("%.1f" % (temp))))), 1, 30, 0xffffff)
     lcd.print(((str(' Hum: ') + str(("%.1f" % (hum))))), 1, 50, 0xffffff)
     wait(10)
-    # wdt.feed()
+    wdt.feed()
