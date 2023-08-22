@@ -167,6 +167,8 @@ def main():
     client.subscribe(b"m5stick/set")
     client.subscribe(b"m5stick/config")
     ha_autodiscover(client)
+    payload = {"state": "online"}
+    client.publish(str("homeassistant/sensor/m5stick/availability"), str(json.dumps(payload)))
 
     n = 0
 
