@@ -58,7 +58,7 @@ def process_m5stick_config(topic, msg):
     global config
     try:
         data = json.loads(msg.decode())
-        # should not throw an exception if the keys are the same
+        # should throw an exception if the keys are not identical
         for k in config:
             _ = data[k]
         with open('config.json', 'w') as f:
