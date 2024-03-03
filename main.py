@@ -190,10 +190,14 @@ def main():
             deepsleep(delay)
 
         n += 1
+
+        if n % 20 == 0:
+            ha_autodiscover(client)
+
         lcd.clear()
-        lcd.print(((str(' Baro: ') + str(("%.0f" % (press))))), 1, 10, 0xffffff)
-        lcd.print(((str(' Temp: ') + str(("%.1f" % (temp))))), 1, 30, 0xffffff)
-        lcd.print(((str(' Hum: ') + str(("%.1f" % (hum))))), 1, 50, 0xffffff)
+        lcd.print((str(' Baro: ') + str(("%.0f" % (press)))), 1, 10, 0xffffff)
+        lcd.print((str(' Temp: ') + str(("%.1f" % (temp)))), 1, 30, 0xffffff)
+        lcd.print((str(' Hum: ') + str(("%.1f" % (hum)))), 1, 50, 0xffffff)
         time.sleep(delay / 1000)
         if wdt is not None:
             wdt.feed()
